@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <meta content="width=device-width, initial-scale=1.0" />
+    <title>Login Form</title>
+    <link rel="stylesheet" href="Login.css">
+    <link href="https://fonts.googleapis.com/css?family=Coiny" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Libre+Baskerville" rel="stylesheet">
+    <img src="logo.png" alt="">
+  </head>
+  <body>
+    <h1>LOGIN</h1>
+    <form class="container" action="/login" method="POST">
+     
+  
+      <input type="text" autocomplete="off" id="username" name="us" placeholder="Username">
+      <input type="text" autocomplete="off" id="password" name="ps" placeholder="Password">
+      <input type="submit" value="Login">
+    </form>
+  
+    <script>
+    const form = document.getElementById('login')
+    
+    if (form) {
+    form.addEventListener('submit',login)
+    return;
+   }
+   
+  
+
+    async function login(event) {
+      event.preventDefault()
+      const username = document.getElementById('username').value
+      const password = document.getElementById('password').value
+
+      const result = await fetch('/api/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          username,
+          password
+        })
+      }).then((res) => res.json())
+
+      if (result.status === 'ok') {
+        // everythign went fine
+        console.log('Got the token: ', result.data)
+        localStorage.setItem('token', result.data)
+        alert('Success')
+      } else {
+        alert(result.error)
+      }
+    }
+    </script>
+  </body>
+</html>
